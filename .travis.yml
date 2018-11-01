@@ -1,5 +1,13 @@
 language: node_js
 node_js:
-  - '10'
-  - '8'
-  - '6'
+- '10'
+- '8'
+- '6'
+deploy:
+  provider: npm
+  email: 667@june07.com
+  api_key:
+    secure: Ihgq8J6e5DJlc1/idQKHfpyAF2Sjep617lplf92InN/9cxsGs4KX95pzNKT69Lj+mu9nsrSP4dHWryWVoYH/dwE7/415aHoGal3I4JWK0jPDW/wJnzPYpXe6tHWl4Qu5/sS8mn/04jetUAzlh1nkpfhfVB2W6rD2PNunyuq8iW5V41Ad476w4Hzy2Tote5WzFGa2p8p1WfJo541echpDWLLFJf5go8JpTeQpx2SR3ouSe9/5VB6LtUhMis8T8iMCw8X9svJJraXs59N89TArsJpKWDni5LdmAbGABOYHTkdvwL9bzsjxgUlErgOTYFk8ckUr4JDvPX7wKjDJ7fzFPBM+BCi6pdeI5uF1SDdK0HAYn3SM6hRoZ1rJ3uiQ44Wrl6owVrOJXKd0gRladvbj2UQjwDEaVLsiacBW7XccjhvzuU8rN6kRpfYhjDaqFw36nmE4L/GDA4kGUfZO0vueT4MvSapr9sUUGhEJc4ulgw9vCESRpg/oM4szVTe4nDXXBmibrNbt2eW6zsx/P8bMfQO25H27LeEG9zqMIjnrMFaEA6xgkJuX3N+BlsXIG7/Ix1nEKmI24gCNysf3dG2vYyGHg1n9vpMIjYYPhDzs1leDqzYwCFA3p1IlHGwJ7H3AFKqsZPvmflDPjsMevyS/u20PhmRNo51h1QypH/tg3P4=
+  on:
+    tags: true
+    repo: june07/ps-list
