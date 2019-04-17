@@ -1,38 +1,19 @@
 {
-	"name": "ps-list",
-	"version": "5.0.0",
-	"description": "Get running processes",
-	"license": "MIT",
-	"repository": "sindresorhus/ps-list",
-	"author": {
-		"name": "Sindre Sorhus",
-		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
-	},
-	"engines": {
-		"node": ">=6"
-	},
-	"scripts": {
-		"test": "xo && ava"
-	},
-	"files": [
-		"index.js"
-	],
-	"keywords": [
-		"ps",
-		"proc",
-		"process",
-		"processes",
-		"list",
-		"running",
-		"tasklist"
-	],
-	"dependencies": {
-		"pify": "^3.0.0",
-		"tasklist": "^3.1.0"
-	},
-	"devDependencies": {
-		"ava": "*",
-		"xo": "*"
-	}
+  "name": "@667/ps-list",
+  "version": "1.0.0",
+  "description": "> Get running processes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/june07/ps-list.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/june07/ps-list/issues"
+  },
+  "homepage": "https://github.com/june07/ps-list#readme"
 }
