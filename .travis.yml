@@ -5,10 +5,14 @@ language: node_js
 node_js:
 - '12'
 - '10'
-deploy:
-  provider: npm
-  email: 667@june07.com
-  api_key:
-    secure: Is6uavpvCyvHSrLPZX/Vtmp1Y6m3kl11zvLrWIvplnMNIhMijA/jEbn/7jWmLhELg+t1IPNRjHOQCIK646ukjFE74hJ8jCT+vAkt93tJH0BAcC0QFoi6QbPhAyWzgYaMenbDSahEYV4KO0IkG+v/p3LQsbkfgCjQrpIel9CFcYh/jz1I53JlnvAip2oxwJe9nQEia67Vl9j/bOXYatjTWY3rY0w4AxbeqSecgY45udpAYtvJOC3B0ks+AqgGYE+MRBFnY5XBidiLEt7zhG8YWnRb/Fd88kU4lEMD+Fvhu4+Zeq0Od95QnDl5Ga59bYoJuxqQtbwhN1MuIUcS3nG7HielnFkzL0sitZpBwSvoLBSM/Qwc1u0dr4xgBhWJrMYjW+CdAfYyj2e3tL2nKJDxHHgzCDUJiITVrKzkhJMU1uB6wSUGqX4eeUvnUS+rpC01a0PTYpq/4EsUZiFhjGKpV1hxQsZ5q5QxdTz6eFqF8BXAjsxJfUZAqJ1NWirKmhbyIbM2cL6KVHDrKI9O/hZgKwWbpGfM24qVMGTrtW20JCI4KhO1xrza9+LDCKmpu3shxaaLU+zF4KiGTdTp3R+X1b4772aEViNgHcgV1dGQ6ifeP9l8wXfo8/2imvcw/DGFs2sc0IO8BoYUtZcFB2wxbxIvN/PRdWZqfoWpg1nJW4k=
-  on:
-    repo: june07/ps-list
+jobs:
+  include:
+    stage: npm release
+      node_js: 12
+      deploy:
+        provider: npm
+        email: 667@june07.com
+        api_key:
+          secure: Is6uavpvCyvHSrLPZX/Vtmp1Y6m3kl11zvLrWIvplnMNIhMijA/jEbn/7jWmLhELg+t1IPNRjHOQCIK646ukjFE74hJ8jCT+vAkt93tJH0BAcC0QFoi6QbPhAyWzgYaMenbDSahEYV4KO0IkG+v/p3LQsbkfgCjQrpIel9CFcYh/jz1I53JlnvAip2oxwJe9nQEia67Vl9j/bOXYatjTWY3rY0w4AxbeqSecgY45udpAYtvJOC3B0ks+AqgGYE+MRBFnY5XBidiLEt7zhG8YWnRb/Fd88kU4lEMD+Fvhu4+Zeq0Od95QnDl5Ga59bYoJuxqQtbwhN1MuIUcS3nG7HielnFkzL0sitZpBwSvoLBSM/Qwc1u0dr4xgBhWJrMYjW+CdAfYyj2e3tL2nKJDxHHgzCDUJiITVrKzkhJMU1uB6wSUGqX4eeUvnUS+rpC01a0PTYpq/4EsUZiFhjGKpV1hxQsZ5q5QxdTz6eFqF8BXAjsxJfUZAqJ1NWirKmhbyIbM2cL6KVHDrKI9O/hZgKwWbpGfM24qVMGTrtW20JCI4KhO1xrza9+LDCKmpu3shxaaLU+zF4KiGTdTp3R+X1b4772aEViNgHcgV1dGQ6ifeP9l8wXfo8/2imvcw/DGFs2sc0IO8BoYUtZcFB2wxbxIvN/PRdWZqfoWpg1nJW4k=
+        on:
+          repo: june07/ps-list
