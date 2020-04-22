@@ -1,7 +1,7 @@
 {
   "name": "@667/ps-list",
   "version": "1.0.3",
-  "description": "> Get running processes",
+  "description": "Get running processes",
   "main": "index.js",
   "scripts": {
     "test": "exit 0"
@@ -10,12 +10,27 @@
     "type": "git",
     "url": "git+https://github.com/june07/ps-list.git"
   },
-  "author": "",
+  "author": {
+    "name": "June07",
+    "email": "667@june07.com",
+    "url": "june07.com"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/june07/ps-list/issues"
   },
   "homepage": "https://github.com/june07/ps-list#readme",
+  "keywords": [
+		"ps",
+		"proc",
+		"process",
+		"processes",
+		"list",
+		"running",
+    "tasklist",
+    "wmi",
+    "wmic"
+	],
   "dependencies": {
     "pify": "^4.0.1"
   }

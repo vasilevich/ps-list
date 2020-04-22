@@ -1,8 +1,10 @@
+os:
+  - linux
+  - windows
 language: node_js
 node_js:
+- '12'
 - '10'
-- '8'
-- '6'
 deploy:
   provider: npm
   email: 667@june07.com
