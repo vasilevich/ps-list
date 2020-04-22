@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/june07/ps-list.git"
   },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com/"
+  },
   "author": {
     "name": "June07",
     "email": "667@june07.com",
