@@ -1,6 +1,6 @@
 {
   "name": "@667/ps-list",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "> Get running processes",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/june07/ps-list#readme",
   "dependencies": {
-    "pify": "^4.0.1",
-    "tasklist": "^3.1.1"
+    "pify": "^4.0.1"
   }
 }

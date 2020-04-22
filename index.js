@@ -2,18 +2,22 @@
 const path = require('path');
 const childProcess = require('child_process');
 const mypid = require('process').pid;
-const tasklist = require('tasklist');
 const pify = require('pify');
+const os = require('os');
 
-function win() {
-	return tasklist().then(data => {
-		return data.map(x => {
-			return {
-				pid: x.pid,
-				name: x.imageName,
-				cmd: x.imageName
-			};
+function win(options = {}) {
+	const processArgs = options.processName ? `process, where, name like "%${options.processName}%"` : 'process';
+	return pify(childProcess.execFile)('wmic', processArgs.split(',').map(s => s.trim()).concat(['get', '*', '/format:csv'])).then(stdout => {
+		stdout = stdout.trim().split(os.EOL);
+		let header = stdout.shift().split(',').map(l => l.toLowerCase());
+		stdout = stdout.map(l => l.split(',').map((value, index) => ({ [`${header[index]}`]: value })).reduce((a, c) => Object.assign(a, c))).map(l => {
+			return Object.assign(l, {
+				pid: Number.parseInt(l.processid, 10),
+				cmd: l.commandline,
+				ppid: Number.parseInt(l.parentprocessid, 10)
+			});
 		});
+		return stdout;
 	});
 }
 
