@@ -7,10 +7,12 @@ node_js:
 - '10'
 jobs:
   include:
-    stage: npm release
+    - stage: npm release
       node_js: 12
       deploy:
         provider: npm
         email: 667@june07.com
         api_key: "$NPM_TOKEN"
+        on:
+          repo: june07/ps-list
           
