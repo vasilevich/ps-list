@@ -27,7 +27,7 @@ async function win(options = {}) {
 				pid,
 				cmd: l.commandline,
 				ppid: Number.parseInt(l.parentprocessid, 10),
-				cpu: Number.parseFloat(perfproc.find(record => Number.parseInt(record.idprocess) === pid).percentprocessortime),
+				cpu: perfproc.find(record => Number.parseInt(record.idprocess) === pid).percentprocessortime/os.cpus().length,
 				memory: Number.parseFloat(l.workingsetsize)
 			});
 		});
