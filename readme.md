@@ -4,6 +4,10 @@
 
 Works on macOS, Linux, and Windows.
 
+Primary difference between [sindresorhus/ps-list](https://github.com/sindresorhus/ps-list) is the use of [WMIC](https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmic) instead of [fastlist.exe](https://github.com/sindresorhus/ps-list/pull/21).
+
+WMIC is a native command-line utility for Windows that provides much more information that available otherwise.
+
 
 ## Install
 
