@@ -8,18 +8,33 @@ const TEN_MEGABYTES = 1000 * 1000 * 10;
 const execFile = util.promisify(childProcess.execFile);
 
 async function win(options = {}) {
-	const processArgs = options.processName ? `process, where, name like "%${options.processName}%"` : 'process';
-	let {stdout} = await execFile('wmic', processArgs.split(',').map(s => s.trim()).concat(['get', '*', '/format:csv']), {maxBuffer: TEN_MEGABYTES});
-	stdout = stdout.trim().split(os.EOL);
-	let header = stdout.shift().split(',').map(l => l.toLowerCase());
-	stdout = stdout.map(l => l.split(',').map((value, index) => ({ [`${header[index]}`]: value })).reduce((a, c) => Object.assign(a, c))).map(l => {
-		return Object.assign(l, {
-			pid: Number.parseInt(l.processid, 10),
-			cmd: l.commandline,
-			ppid: Number.parseInt(l.parentprocessid, 10)
+	const perfprocArgs = options.processName ? `path, Win32_PerfFormattedData_PerfProc_Process, where, (, name, like, '${options.processName.split('.').shift()}%', )` : 'path, Win32_PerfFormattedData_PerfProc_Process';
+	const processArgs = options.processName ? `process, where, (, name, like, '${options.processName}%', )` : 'process';
+	
+	try {
+		let { error, stdout, stderr } = await execFile('wmic', perfprocArgs.split(',').map(s => s.trim()).concat(['get', 'name,idprocess,PercentProcessorTime', '/format:csv']), {maxBuffer: TEN_MEGABYTES});
+
+		let perfproc = stdout.trim().split(os.EOL);
+		let header = perfproc.shift().split(',').map(l => l.trim().toLowerCase());
+		perfproc = perfproc.map(l => l.split(',').map((value, index) => ({ [header[index]]: value })).reduce((a, c) => Object.assign(a, c)));
+
+		({ stdout } = await execFile('wmic', processArgs.split(',').map(s => s.trim()).concat(['get', '*', '/format:csv']), {maxBuffer: TEN_MEGABYTES}));
+		stdout = stdout.trim().split(os.EOL);
+		header = stdout.shift().split(',').map(l => l.trim().toLowerCase());
+		stdout = stdout.map(l => l.split(',').map((value, index) => ({ [header[index]]: value })).reduce((a, c) => Object.assign(a, c))).map(l => {
+			let pid = Number.parseInt(l.processid, 10);
+			return Object.assign(l, {
+				pid,
+				cmd: l.commandline,
+				ppid: Number.parseInt(l.parentprocessid, 10),
+				cpu: Number.parseFloat(perfproc.find(record => Number.parseInt(record.idprocess) === pid).percentprocessortime),
+				memory: Number.parseFloat(l.workingsetsize)
+			});
 		});
-	});
-	return stdout;
+		return stdout;
+	} catch (error) {
+		console.dir(error);
+	}
 }
 
 async function nowin(options = {}) {
