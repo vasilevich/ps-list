@@ -28,7 +28,8 @@ async function win(options = {}) {
 				cmd: l.commandline,
 				ppid: Number.parseInt(l.parentprocessid, 10),
 				cpu: perfproc.find(record => Number.parseInt(record.idprocess) === pid).percentprocessortime/os.cpus().length,
-				memory: Number.parseFloat(l.workingsetsize)
+				memory: Number.parseFloat(l.workingsetsize),
+				platform: process.platform
 			});
 		});
 		return stdout;
@@ -66,7 +67,8 @@ async function nowin(options = {}) {
 					cmd: ret[x].args,
 					ppid: Number.parseInt(ret[x].ppid, 10),
 					cpu: Number.parseFloat(ret[x]['%cpu']),
-					memory: Number.parseFloat(ret[x]['%mem'])
+					memory: Number.parseFloat(ret[x]['%mem']),
+					platform: process.platform
 				};
 			});
 		}
