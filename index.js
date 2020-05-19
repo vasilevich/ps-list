@@ -10,6 +10,7 @@ const execFile = util.promisify(childProcess.execFile);
 async function win(options = {}) {
 	const perfprocArgs = options.processName ? `path, Win32_PerfFormattedData_PerfProc_Process, where, (, name, like, '${options.processName.split('.').shift()}%', )` : 'path, Win32_PerfFormattedData_PerfProc_Process';
 	const processArgs = options.processName ? `process, where, (, name, like, '${options.processName}%', )` : 'process';
+	const {includeSelf} = options;
 	
 	try {
 		let { error, stdout, stderr } = await execFile('wmic', perfprocArgs.split(',').map(s => s.trim()).concat(['get', 'name,idprocess,PercentProcessorTime', '/format:csv']), {maxBuffer: TEN_MEGABYTES});
@@ -32,6 +33,7 @@ async function win(options = {}) {
 				platform: process.platform
 			});
 		});
+		if (!includeSelf) stdout = stdout.filter(l => l.pid !== mypid);
 		return stdout;
 	} catch (error) {
 		console.dir(error);
