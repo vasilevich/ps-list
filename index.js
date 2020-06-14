@@ -45,8 +45,8 @@ async function nowin(options = {}) {
 	const flags = (options.all === false ? '' : 'a') + 'wwxo';
 	const {includeSelf} = options;
 
-	await Promise.all(['comm', 'args', 'ppid', 'uid', '%cpu', '%mem'].map(async cmd => {
-		const {stdout} = await execFile('ps', [flags, `pid,${cmd}`], {maxBuffer: TEN_MEGABYTES});
+	let args = ['comm', 'args', 'ppid', 'uid', '%cpu', '%mem'].map(async cmd => {
+		const {error, stdout, stderr} = await execFile('ps', [flags, `pid,${cmd}`], {maxBuffer: TEN_MEGABYTES});
 
 		for (let line of stdout.trim().split('\n').slice(1)) {
 			line = line.trim();
@@ -56,13 +56,16 @@ async function nowin(options = {}) {
 			if (ret[pid] === undefined) {
 				ret[pid] = {};
 			}
+			ret[pid][cmd] = val;
 		}
-	}).then(() => {
+	});
+	let filtered = await Promise.all(args).then(() => {
 		// Filter out inconsistencies as there might be race
 		// issues due to differences in `ps` between the spawns
 		// TODO: Use `Object.entries` when targeting Node.js 8
-		if (includeSelf) {
-			return Object.keys(ret).filter(x => ret[x].comm && ret[x].args && ret[x].ppid && ret[x]['%cpu'] && ret[x]['%mem']).map(x => {
+		return Object.keys(ret).filter(x => ret[x].comm && ret[x].args && ret[x].ppid && ret[x]['%cpu'] && ret[x]['%mem'])
+			.filter(includeSelfFilter)
+			.map(x => {
 				return {
 					pid: Number.parseInt(x, 10),
 					name: path.basename(ret[x].comm),
@@ -72,22 +75,22 @@ async function nowin(options = {}) {
 					memory: Number.parseFloat(ret[x]['%mem']),
 					platform: process.platform
 				};
-			});
+			})
+			.filter(processNameFilter);
+	});
+	function includeSelfFilter(element) {
+		if (!includeSelf) return element;
+		if (parseInt(element, 10) !== mypid) {
+			return element;
 		}
-		return Object.keys(ret).filter(x => ret[x].comm && ret[x].args && ret[x].ppid && ret[x]['%cpu'] && ret[x]['%mem']).filter(x => parseInt(x, 10) !== mypid).map(x => {
-			return Object.entries(ret)
-				.filter(([, value]) => value.comm && value.args && value.ppid && value.uid && value['%cpu'] && value['%mem'])
-				.map(([key, value]) => ({
-					pid: Number.parseInt(key, 10),
-					name: path.basename(value.comm),
-					cmd: value.args,
-					ppid: Number.parseInt(value.ppid, 10),
-					uid: Number.parseInt(value.uid, 10),
-					cpu: Number.parseFloat(value['%cpu']),
-					memory: Number.parseFloat(value['%mem'])
-				}));
-		});
-	}));
+	}
+	function processNameFilter(element) {
+		if (!options.processName) return element;
+		if (options.processName && element.name.toLowerCase().trim() === options.processName) {
+			return element;
+		}
+	}
+	return filtered;
 }
 
 module.exports = process.platform === 'win32' ? win : nowin;
